@@ -34,7 +34,7 @@ export async function CreatePaymentRequest(params: {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) throw Error(`Status not OK`);
+      if (!res.ok) throw Error(`Status not OK: ${res.status}`);
 
       const location = res.headers.get("Location");
       const PaymentRequestToken = res.headers.get("PaymentRequestToken");
@@ -51,7 +51,7 @@ export async function CreatePaymentRequest(params: {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) throw Error(`Status not OK`);
+      if (!res.ok) throw Error(`Status not OK: ${res.status}`);
 
       const location = res.headers.get("Location");
       const PaymentRequestToken = res.headers.get("PaymentRequestToken");
