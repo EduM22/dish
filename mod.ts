@@ -1,1 +1,2 @@
-export * as swish from "./payment-request.ts";
+export { CreatePaymentRequest } from "./payment-request.ts";
+export { CreateRefundRequest } from "./refund-request.ts";

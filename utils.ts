@@ -19,3 +19,13 @@ export interface PaymentRequestMcommerce {
   payeePaymentReference?: string;
   message?: string;
 }
+
+export interface RefundRequest {
+  originalPaymentReference: string;
+  callbackUrl: string;
+  payerAlias: string;
+  amount: number;
+  currency: "SEK";
+  payerPaymentReference?: string;
+  message?: string;
+}
