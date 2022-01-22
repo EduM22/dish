@@ -1,2 +1,2 @@
-export { CreatePaymentRequest } from "./payment-request.ts";
-export { CreateRefundRequest } from "./refund-request.ts";
+export * from "./payment.ts";
+export * from "./refund.ts";
