@@ -27,7 +27,14 @@ export async function CreateRefundRequest(params: {
       headers: { "Content-Type": "application/json" },
     });
 
-    if (!res.ok) throw Error(`Status not OK: ${res.status}`);
+    client.close();
+
+    if (!res.ok) {
+      const msg = await res.json();
+      throw Error(`Status not OK: ${res.status}, ${JSON.stringify(msg)}`);
+    }
+
+    await res.body?.cancel();
 
     const location = res.headers.get("Location");
 

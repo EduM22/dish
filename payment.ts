@@ -25,7 +25,7 @@ export async function CreatePaymentRequest(params: {
 
     if (params.type == "MCommerce") {
       const url = baseUrl +
-        `/api/v1/paymentrequests/${params.instructionUUID}`;
+        `/api/v2/paymentrequests/${params.instructionUUID}`;
 
       const res: Response = await fetch(url, {
         client,
@@ -34,7 +34,14 @@ export async function CreatePaymentRequest(params: {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) throw Error(`Status not OK: ${res.status}`);
+      client.close();
+
+      if (!res.ok) {
+        const msg = await res.json();
+        throw Error(`Status not OK: ${res.status}, ${JSON.stringify(msg)}`);
+      }
+
+      await res.body?.cancel();
 
       const location = res.headers.get("Location");
       const PaymentRequestToken = res.headers.get("PaymentRequestToken");
@@ -51,7 +58,14 @@ export async function CreatePaymentRequest(params: {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) throw Error(`Status not OK: ${res.status}`);
+      client.close();
+
+      if (!res.ok) {
+        const msg = await res.json();
+        throw Error(`Status not OK: ${res.status}, ${JSON.stringify(msg)}`);
+      }
+
+      await res.body?.cancel();
 
       const location = res.headers.get("Location");
       const PaymentRequestToken = res.headers.get("PaymentRequestToken");
