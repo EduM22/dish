@@ -5,6 +5,40 @@ import {
   SWISH_TEST_URL,
 } from "./utils.ts";
 
+/**
+ * Creates a new Swish payment request
+ * @param {string} SWISH_CA the ca cert from swish
+ * @param {string} SWISH_PUBLIC the public cert from swish
+ * @param {string} SWISH_PRIVATE the private cert from swish
+ * @param {boolean} live use the live or test env
+ * @param {"MCommerce" | "ECommerce"} type what type of request
+ * @param {string} instructionUUID the ID of the request
+ * @param {PaymentRequestEcommerce | PaymentRequestMcommerce} data to send to swish
+ * @returns {object} Id, Token & location
+ *
+ * # Examples
+ *
+ * ```ts
+ * import { CreatePaymentRequest } from "./payment.ts";
+ *
+ * const data = await CreatePaymentRequest({
+ *    SWISH_CA: "CERT",
+ *    SWISH_PRIVATE: "PRIVATE",
+ *    SWISH_PUBLIC: "PUBLIC",
+ *    live: false,
+ *    type: "MCommerce",
+ *    instructionUUID: instructionId,
+ *    data: {
+ *      payeePaymentReference: "0123456789",
+ *      callbackUrl: "https://example.com/api/swishcb/paymentrequests",
+ *      payeeAlias: "1231181189",
+ *      amount: 100,
+ *      currency: "SEK",
+ *      message: "Kingston USB Flash Drive 8 GB",
+ *    },
+ * });
+ * ```
+ */
 export async function CreatePaymentRequest(params: {
   SWISH_CA: string;
   SWISH_PUBLIC: string;

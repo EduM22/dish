@@ -1,5 +1,36 @@
 import { RefundRequest, SWISH_LIVE_URL, SWISH_TEST_URL } from "./utils.ts";
 
+/**
+ * Creates a new Swish refund request
+ * @param {string} SWISH_CA the ca cert from swish
+ * @param {string} SWISH_PUBLIC the public cert from swish
+ * @param {string} SWISH_PRIVATE the private cert from swish
+ * @param {boolean} live use the live or test env
+ * @param {string} instructionUUID the ID of the request
+ * @param {RefundRequest} data to send to swish
+ * @returns {object} Id & location
+ *
+ * # Examples
+ *
+ * ```ts
+ * import { CreateRefundRequest } from "./refund.ts";
+ *
+ * const data = await CreateRefundRequest({
+ *    SWISH_CA: "CERT",
+ *    SWISH_PRIVATE: "PRIVATE",
+ *    SWISH_PUBLIC: "PUBLIC",
+ *    live: false,
+ *    instructionUUID: instructionId,
+ *    data: {
+ *      payerAlias: "1231111111",
+ *      currency: "SEK",
+ *      callbackUrl: "https://your-callback-url.com",
+ *      originalPaymentReference: "Test",
+ *      amount: 100,
+ *    },
+ * });
+ * ```
+ */
 export async function CreateRefundRequest(params: {
   SWISH_CA: string;
   SWISH_PUBLIC: string;
