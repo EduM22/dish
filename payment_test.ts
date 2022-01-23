@@ -54,7 +54,6 @@ Deno.test("Create M-Commerce request", async () => {
   }
 });
 
-
 Deno.test("Create E-Commerce request", async () => {
   try {
     const id = crypto.randomUUID();
