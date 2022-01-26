@@ -29,3 +29,47 @@ export interface RefundRequest {
   payerPaymentReference?: string;
   message?: string;
 }
+
+export interface Mcom2QcomQR {
+  token: string;
+  format: "jpg" | "png" | "svg";
+  size?: number;
+  border?: number;
+  transparent?: boolean;
+}
+
+export interface QRPreFilled {
+  format: "jpg" | "png" | "svg";
+  payee?: {
+    value: string;
+    editable: boolean;
+  };
+  amount?: {
+    value: number;
+    editable: boolean;
+  };
+  message?: {
+    value: string;
+    editable: boolean;
+  };
+  size?: number;
+  border?: number;
+  transparent?: boolean;
+}
+
+export interface PayoutRequest {
+  payload: {
+    payoutInstructionUUID: string;
+    payerPaymentReference: string;
+    payerAlias: string;
+    payeeAlias: string;
+    payeeSSN: string;
+    amount: string;
+    currency: "SEK";
+    payoutType: string;
+    message?: string;
+    instructionDate: string;
+    signingCertificateSerialNumber: string;
+  };
+  callbackUrl: string;
+}
