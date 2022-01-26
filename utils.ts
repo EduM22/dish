@@ -58,3 +58,20 @@ export interface QRPreFilled {
   border?: number;
   transparent?: boolean;
 }
+
+export interface PayoutRequest {
+  payload: {
+    payoutInstructionUUID: string;
+    payerPaymentReference: string;
+    payerAlias: string;
+    payeeAlias: string;
+    payeeSSN: string;
+    amount: string;
+    currency: "SEK";
+    payoutType: string;
+    message?: string;
+    instructionDate: string;
+    signingCertificateSerialNumber: string;
+  };
+  callbackUrl: string;
+}
