@@ -1,5 +1,7 @@
 export const SWISH_LIVE_URL = "https://cpc.getswish.net/swish-cpcapi";
 export const SWISH_TEST_URL = "https://mss.cpc.getswish.net/swish-cpcapi";
+export const SWISH_QR_LIVE_URL = "https://mpc.getswish.net/qrg-swish";
+export const SWISH_QR_TEST_URL = "https://mpc.getswish.net/qrg-swish";
 
 export interface PaymentRequestEcommerce {
   payeeAlias: string;
