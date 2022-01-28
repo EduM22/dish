@@ -19,7 +19,7 @@ jobs:
 
       - name: "Test"
         env:
-          SWISH_CA_CERT: ${{ env.SWISH_CA_CERT }}
-          SWISH_PUBLIC_CERT: ${{ env.SWISH_PUBLIC_CERT }}
-          SWISH_PRIVATE_CERT: ${{ env.SWISH_PRIVATE_CERT }}
+          SWISH_CA_CERT: ${{ secrets.SWISH_CA_CERT }}
+          SWISH_PUBLIC_CERT: ${{ secrets.SWISH_PUBLIC_CERT }}
+          SWISH_PRIVATE_CERT: ${{ secrets.SWISH_PRIVATE_CERT }}
         run: deno test --allow-all --unstable
