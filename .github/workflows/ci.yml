@@ -11,8 +11,15 @@ jobs:
         with:
           deno-version: v1.x
 
-      - run: deno fmt --check
+      - name: "fmt"
+        run: deno fmt --check
 
-      - run: deno lint
+      - name: "Lint"
+        run: deno lint
 
-      - run: deno test --allow-all --unstable
+      - name: "Test"
+        env:
+          SWISH_CA_CERT: ${{ env.SWISH_CA_CERT }}
+          SWISH_PUBLIC_CERT: ${{ env.SWISH_PUBLIC_CERT }}
+          SWISH_PRIVATE_CERT: ${{ env.SWISH_PRIVATE_CERT }}
+        run: deno test --allow-all --unstable
