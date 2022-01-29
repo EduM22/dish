@@ -179,7 +179,6 @@ Deno.test("Incorrect size (Fail)", async () => {
   }
 });
 
-
 Deno.test("Token (Fail)", async () => {
   try {
     await CreateQRRequest({

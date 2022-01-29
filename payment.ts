@@ -57,7 +57,6 @@ export async function CreatePaymentRequest(params: {
   });
 
   try {
-
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
 
     if (params.type == "MCommerce") {

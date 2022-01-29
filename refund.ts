@@ -51,7 +51,6 @@ export async function CreateRefundRequest(params: {
   });
 
   try {
-
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
 
     await RefundRequestSchema.validate(params.data);

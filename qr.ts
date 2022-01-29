@@ -53,7 +53,6 @@ export async function CreateQRRequest(params: {
   });
 
   try {
-
     const baseUrl = params.live ? SWISH_QR_LIVE_URL : SWISH_QR_TEST_URL;
 
     if (params.type == "McomToQcom") {

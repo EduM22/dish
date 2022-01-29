@@ -72,7 +72,6 @@ Deno.test("Create refund request (OK)", async () => {
 
 Deno.test("Create refund request (Fail)", async () => {
   try {
-
     await CreateRefundRequest({
       SWISH_CA: SWISH_CA!,
       SWISH_PRIVATE: SWISH_PRIVATE!,
