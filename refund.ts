@@ -1,4 +1,9 @@
-import { RefundRequest, SWISH_LIVE_URL, SWISH_TEST_URL } from "./utils.ts";
+import {
+  RefundRequest,
+  RefundRequestSchema,
+  SWISH_LIVE_URL,
+  SWISH_TEST_URL,
+} from "./utils.ts";
 
 /**
  * Creates a new Swish refund request
@@ -47,6 +52,8 @@ export async function CreateRefundRequest(params: {
     });
 
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
+
+    await RefundRequestSchema.validate(params.data);
 
     const url = baseUrl +
       `/api/v2/refunds/${params.instructionUUID}`;

@@ -1,6 +1,8 @@
 import {
   PaymentRequestEcommerce,
+  PaymentRequestEcommerceSchema,
   PaymentRequestMcommerce,
+  PaymentRequestMcommerceSchema,
   SWISH_LIVE_URL,
   SWISH_TEST_URL,
 } from "./utils.ts";
@@ -58,6 +60,8 @@ export async function CreatePaymentRequest(params: {
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
 
     if (params.type == "MCommerce") {
+      await PaymentRequestMcommerceSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v2/paymentrequests/${params.instructionUUID}`;
 
@@ -82,6 +86,8 @@ export async function CreatePaymentRequest(params: {
 
       return { location, PaymentRequestToken, id: params.instructionUUID };
     } else if (params.type == "ECommerce") {
+      await PaymentRequestEcommerceSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v2/paymentrequests/${params.instructionUUID}`;
 

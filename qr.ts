@@ -1,6 +1,8 @@
 import {
   Mcom2QcomQR,
+  Mcom2QcomQRSchema,
   QRPreFilled,
+  QRPreFilledSchema,
   SWISH_QR_LIVE_URL,
   SWISH_QR_TEST_URL,
 } from "./utils.ts";
@@ -54,6 +56,8 @@ export async function CreateQRRequest(params: {
     const baseUrl = params.live ? SWISH_QR_LIVE_URL : SWISH_QR_TEST_URL;
 
     if (params.type == "McomToQcom") {
+      await Mcom2QcomQRSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v1/commerce`;
 
@@ -75,6 +79,8 @@ export async function CreateQRRequest(params: {
 
       return { qr: qrData };
     } else if (params.type == "PreFilled") {
+      await QRPreFilledSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v1/prefilled`;
 
