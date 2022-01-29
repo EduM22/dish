@@ -44,12 +44,13 @@ export async function CreateRefundRequest(params: {
   instructionUUID: string;
   data: RefundRequest;
 }) {
+  const client = Deno.createHttpClient({
+    caCerts: [params.SWISH_CA],
+    certChain: params.SWISH_PUBLIC,
+    privateKey: params.SWISH_PRIVATE,
+  });
+
   try {
-    const client = Deno.createHttpClient({
-      caCerts: [params.SWISH_CA],
-      certChain: params.SWISH_PUBLIC,
-      privateKey: params.SWISH_PRIVATE,
-    });
 
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
 
@@ -78,6 +79,7 @@ export async function CreateRefundRequest(params: {
 
     return { location, id: params.instructionUUID };
   } catch (error) {
+    client.close();
     throw new Error(`Error from swish`, {
       cause: error,
     });

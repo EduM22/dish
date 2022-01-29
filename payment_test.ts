@@ -25,7 +25,7 @@ SWISH_CA = atob(SWISH_CA);
 SWISH_PUBLIC = atob(SWISH_PUBLIC);
 SWISH_PRIVATE = atob(SWISH_PRIVATE);
 
-Deno.test("Create M-Commerce request", async () => {
+Deno.test("Create M-Commerce request (OK)", async () => {
   try {
     const id = crypto.randomUUID();
     const instructionId = id.replaceAll("-", "").toUpperCase();
@@ -54,7 +54,7 @@ Deno.test("Create M-Commerce request", async () => {
   }
 });
 
-Deno.test("Create E-Commerce request", async () => {
+Deno.test("Create E-Commerce request (OK)", async () => {
   try {
     const id = crypto.randomUUID();
     const instructionId = id.replaceAll("-", "").toUpperCase();
@@ -81,5 +81,35 @@ Deno.test("Create E-Commerce request", async () => {
   } catch (error) {
     console.error(error);
     assert(false);
+  }
+});
+
+Deno.test("Create E-Commerce request (Fail)", async () => {
+  try {
+    const id = crypto.randomUUID();
+    const instructionId = id.replaceAll("-", "").toUpperCase();
+
+    await CreatePaymentRequest({
+      SWISH_CA: SWISH_CA!,
+      SWISH_PRIVATE: SWISH_PRIVATE!,
+      SWISH_PUBLIC: SWISH_PUBLIC!,
+      live: false,
+      // @ts-expect-error error test type
+      type: "FAIL",
+      instructionUUID: instructionId,
+      data: {
+        payeePaymentReference: "0123456789",
+        callbackUrl: "https://example.com/api/swishcb/paymentrequests",
+        payerAlias: "4671234768",
+        payeeAlias: "1231181189",
+        amount: 100,
+        currency: "SEK",
+        message: "Kingston USB Flash Drive 8 GB",
+      },
+    });
+
+    assert(false);
+  } catch {
+    assert(true);
   }
 });

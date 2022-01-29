@@ -50,12 +50,13 @@ export async function CreatePaymentRequest(params: {
   instructionUUID: string;
   data: PaymentRequestEcommerce | PaymentRequestMcommerce;
 }) {
+  const client = Deno.createHttpClient({
+    caCerts: [params.SWISH_CA],
+    certChain: params.SWISH_PUBLIC,
+    privateKey: params.SWISH_PRIVATE,
+  });
+
   try {
-    const client = Deno.createHttpClient({
-      caCerts: [params.SWISH_CA],
-      certChain: params.SWISH_PUBLIC,
-      privateKey: params.SWISH_PRIVATE,
-    });
 
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
 
@@ -115,6 +116,7 @@ export async function CreatePaymentRequest(params: {
       throw new Error(`Not implemented`);
     }
   } catch (error) {
+    client.close();
     throw new Error(`Error from swish`, {
       cause: error,
     });

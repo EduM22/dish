@@ -26,7 +26,7 @@ SWISH_CA = atob(SWISH_CA);
 SWISH_PUBLIC = atob(SWISH_PUBLIC);
 SWISH_PRIVATE = atob(SWISH_PRIVATE);
 
-Deno.test("Create refund request", async () => {
+Deno.test("Create refund request (OK)", async () => {
   try {
     const id = crypto.randomUUID();
     const instructionId = id.replaceAll("-", "").toUpperCase();
@@ -67,5 +67,28 @@ Deno.test("Create refund request", async () => {
   } catch (error) {
     console.error(error);
     assert(false);
+  }
+});
+
+Deno.test("Create refund request (Fail)", async () => {
+  try {
+
+    await CreateRefundRequest({
+      SWISH_CA: SWISH_CA!,
+      SWISH_PRIVATE: SWISH_PRIVATE!,
+      SWISH_PUBLIC: SWISH_PUBLIC!,
+      live: false,
+      instructionUUID: "sadsfhg",
+      data: {
+        payerAlias: "1231111111",
+        currency: "SEK",
+        callbackUrl: "https://your-callback-url.com",
+        originalPaymentReference: "Test",
+        amount: 100,
+      },
+    });
+    assert(false);
+  } catch {
+    assert(true);
   }
 });
