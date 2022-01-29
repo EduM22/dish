@@ -1,4 +1,9 @@
-import { RefundRequest, SWISH_LIVE_URL, SWISH_TEST_URL } from "./utils.ts";
+import {
+  RefundRequest,
+  RefundRequestSchema,
+  SWISH_LIVE_URL,
+  SWISH_TEST_URL,
+} from "./utils.ts";
 
 /**
  * Creates a new Swish refund request
@@ -39,14 +44,16 @@ export async function CreateRefundRequest(params: {
   instructionUUID: string;
   data: RefundRequest;
 }) {
-  try {
-    const client = Deno.createHttpClient({
-      caCerts: [params.SWISH_CA],
-      certChain: params.SWISH_PUBLIC,
-      privateKey: params.SWISH_PRIVATE,
-    });
+  const client = Deno.createHttpClient({
+    caCerts: [params.SWISH_CA],
+    certChain: params.SWISH_PUBLIC,
+    privateKey: params.SWISH_PRIVATE,
+  });
 
+  try {
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
+
+    await RefundRequestSchema.validate(params.data);
 
     const url = baseUrl +
       `/api/v2/refunds/${params.instructionUUID}`;
@@ -71,6 +78,7 @@ export async function CreateRefundRequest(params: {
 
     return { location, id: params.instructionUUID };
   } catch (error) {
+    client.close();
     throw new Error(`Error from swish`, {
       cause: error,
     });

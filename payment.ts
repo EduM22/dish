@@ -1,6 +1,8 @@
 import {
   PaymentRequestEcommerce,
+  PaymentRequestEcommerceSchema,
   PaymentRequestMcommerce,
+  PaymentRequestMcommerceSchema,
   SWISH_LIVE_URL,
   SWISH_TEST_URL,
 } from "./utils.ts";
@@ -48,16 +50,18 @@ export async function CreatePaymentRequest(params: {
   instructionUUID: string;
   data: PaymentRequestEcommerce | PaymentRequestMcommerce;
 }) {
-  try {
-    const client = Deno.createHttpClient({
-      caCerts: [params.SWISH_CA],
-      certChain: params.SWISH_PUBLIC,
-      privateKey: params.SWISH_PRIVATE,
-    });
+  const client = Deno.createHttpClient({
+    caCerts: [params.SWISH_CA],
+    certChain: params.SWISH_PUBLIC,
+    privateKey: params.SWISH_PRIVATE,
+  });
 
+  try {
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
 
     if (params.type == "MCommerce") {
+      await PaymentRequestMcommerceSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v2/paymentrequests/${params.instructionUUID}`;
 
@@ -82,6 +86,8 @@ export async function CreatePaymentRequest(params: {
 
       return { location, PaymentRequestToken, id: params.instructionUUID };
     } else if (params.type == "ECommerce") {
+      await PaymentRequestEcommerceSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v2/paymentrequests/${params.instructionUUID}`;
 
@@ -109,6 +115,7 @@ export async function CreatePaymentRequest(params: {
       throw new Error(`Not implemented`);
     }
   } catch (error) {
+    client.close();
     throw new Error(`Error from swish`, {
       cause: error,
     });

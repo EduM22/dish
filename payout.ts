@@ -1,4 +1,4 @@
-//import { PayoutRequest, SWISH_LIVE_URL, SWISH_TEST_URL } from "./utils.ts";
+//import { PayoutRequestSchema, PayoutRequest, SWISH_LIVE_URL, SWISH_TEST_URL } from "./utils.ts";
 
 /**
  * Creates a new Swish payout request
@@ -54,6 +54,8 @@ export async function CreatePayoutRequest(params: {
     });
 
     const baseUrl = params.live ? SWISH_LIVE_URL : SWISH_TEST_URL;
+
+    await PayoutRequestSchema.validate(params.data)
 
     const url = baseUrl +
       `/api/v1/payouts`;

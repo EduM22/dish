@@ -1,6 +1,8 @@
 import {
   Mcom2QcomQR,
+  Mcom2QcomQRSchema,
   QRPreFilled,
+  QRPreFilledSchema,
   SWISH_QR_LIVE_URL,
   SWISH_QR_TEST_URL,
 } from "./utils.ts";
@@ -44,16 +46,18 @@ export async function CreateQRRequest(params: {
   type: "McomToQcom" | "PreFilled";
   data: Mcom2QcomQR | QRPreFilled;
 }) {
-  try {
-    const client = Deno.createHttpClient({
-      caCerts: [params.SWISH_CA],
-      certChain: params.SWISH_PUBLIC,
-      privateKey: params.SWISH_PRIVATE,
-    });
+  const client = Deno.createHttpClient({
+    caCerts: [params.SWISH_CA],
+    certChain: params.SWISH_PUBLIC,
+    privateKey: params.SWISH_PRIVATE,
+  });
 
+  try {
     const baseUrl = params.live ? SWISH_QR_LIVE_URL : SWISH_QR_TEST_URL;
 
     if (params.type == "McomToQcom") {
+      await Mcom2QcomQRSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v1/commerce`;
 
@@ -75,6 +79,8 @@ export async function CreateQRRequest(params: {
 
       return { qr: qrData };
     } else if (params.type == "PreFilled") {
+      await QRPreFilledSchema.validate(params.data);
+
       const url = baseUrl +
         `/api/v1/prefilled`;
 
@@ -99,6 +105,7 @@ export async function CreateQRRequest(params: {
       throw new Error(`Not implemented`);
     }
   } catch (error) {
+    client.close();
     throw new Error(`Error from swish`, {
       cause: error,
     });
